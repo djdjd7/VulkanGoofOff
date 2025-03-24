@@ -6,6 +6,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -196,6 +199,7 @@ private:
     void createUniformBuffers();
     void createDescriptorPool();
     void createDescriptorSets();
+    void createTextureImage();
     void updateUniformBuffer(uint32_t currentImage);
     void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
@@ -236,6 +240,7 @@ App::App() {
     createGraphicsPipeline();
     createFramebuffers();
     createCommandPool();
+    createTextureImage();
     createVertexBuffer();
     createIndexBuffer();
     createUniformBuffers();
@@ -1163,6 +1168,10 @@ void App::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryProp
     }
 
     vkBindBufferMemory(device, buffer, bufferMemory, 0);
+}
+
+void App::createTextureImage() {
+
 }
 
 void App::createVertexBuffer() {

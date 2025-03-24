@@ -1,11 +1,11 @@
 CFLAGS = -std=c++17 -O2
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-vulkan-goof-off: main.cpp shaders/vert.spv shaders/frag.spv
+vulkan-goof-off: main.cpp shaders/vert.spv shaders/frag.spv stb_image.h
 	g++ $(CFLAGS) -o vulkan-goof-off main.cpp $(LDFLAGS)
 
-release: main.cpp
-	g++ -std=c++17 -Ofast -D NDEBUG -o vulkan-goof-off-release main.cpp $(LDFLAGS)
+stb_image.h:
+	wget https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h
 
 shaders/vert.spv: shaders/shader.vert
 	glslc shaders/shader.vert -o shaders/vert.spv -O
@@ -21,3 +21,4 @@ test: vulkan-goof-off
 clean:
 	rm -f vulkan-goof-off
 	rm -f shaders/*.spv
+	rm -f stb_image.h
