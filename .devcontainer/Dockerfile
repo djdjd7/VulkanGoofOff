@@ -17,6 +17,21 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends libwayland-dev libxkbcommon-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-tools vulkan-tools libvulkan-dev vulkan-validationlayers
 
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+ENV VK_ICD_FILENAMES=/vulkan-icd/nvidia_icd.json
+
+RUN ICD_NVIDIA="/vulkan-icd/nvidia_icd.json" && \
+    mkdir -p /vulkan-icd && \
+    touch /vulkan-icd/nvidia_icd.json \
+    && echo '{' >> $ICD_NVIDIA \
+    && echo '    "file_format_version" : "1.0.0",' >> $ICD_NVIDIA \
+    && echo '    "ICD": {' >> $ICD_NVIDIA \
+    && echo '        "library_path": "libGLX_nvidia.so.0",' >> $ICD_NVIDIA \
+    && echo '        "api_version" : "1.3.290"' >> $ICD_NVIDIA \
+    && echo '    }' >> $ICD_NVIDIA \
+    && echo '}' >> /$ICD_NVIDIA
+
 ENV VULKAN_SDK_VERSION 1.4.309.0
 RUN cd /tmp && \
     curl -L -O https://sdk.lunarg.com/sdk/download/${VULKAN_SDK_VERSION}/linux/vulkansdk-linux-x86_64-${VULKAN_SDK_VERSION}.tar.xz && \
