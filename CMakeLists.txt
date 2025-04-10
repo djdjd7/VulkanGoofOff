@@ -44,7 +44,7 @@ add_custom_command(TARGET textures
 
 add_dependencies(${PROJECT_NAME} shaders textures)
 target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES} Vulkan::Vulkan #[[Vulkan::Headers Vulkan::Loader]] glm)
-#[[if(CMAKE_BUILD_TYPE EQUAL "Release")
+if(CMAKE_BUILD_TYPE EQUAL "Release")
     target_compile_definitions(${PROJECT_NAME} PRIVATE
                                -DNDEBUG)
-endif()]]
+endif()
